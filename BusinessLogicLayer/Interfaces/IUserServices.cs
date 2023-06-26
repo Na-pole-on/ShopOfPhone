@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Interfaces
 {
-    internal interface IUserServices
+    public interface IUserServices
     {
+        Task CreateUser(string email, string password);
     }
 }

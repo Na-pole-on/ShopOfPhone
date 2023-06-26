@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Interfaces
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork: IDisposable
     {
+        UserManager<User> UserManager { get; }
+        Task SaveAsync();
     }
 }
