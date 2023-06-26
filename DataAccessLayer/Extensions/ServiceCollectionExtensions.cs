@@ -1,5 +1,7 @@
 ﻿using DataAccessLayer.Database;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Interfaces;
+using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +20,8 @@ namespace DataAccessLayer.Extensions
             IConfiguration configuration, 
             string connectionString)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>(); 
+
             services.AddDbContext<AppDatabase>(options =>
             {
                 options.UseSqlServer(connectionString);
