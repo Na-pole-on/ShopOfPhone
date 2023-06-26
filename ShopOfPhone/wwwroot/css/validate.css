@@ -1,0 +1,15 @@
+﻿.field-validation-error {
+    color: blue;
+}
+
+input.input-validation-error {
+    border: 1px solid blue;
+}
+
+input.valid {
+    border: 1px solid green;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
