@@ -21,10 +21,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=SignUp}/{id?}");
+    pattern: "{controller=Home}/{action=SignIn}/{id?}");
 
 app.Run();

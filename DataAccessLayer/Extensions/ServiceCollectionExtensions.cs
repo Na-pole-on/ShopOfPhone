@@ -30,6 +30,12 @@ namespace DataAccessLayer.Extensions
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDatabase>();
 
+            services.AddAuthentication("Cookies")
+                .AddCookie(options =>
+            {
+                options.LoginPath = "/Home/SignUp";
+            });
+
             return services;
         }
     }

@@ -29,9 +29,14 @@ namespace BusinessLogicLayer.Services
             }
         }
 
-        public async Task Authentication(string email, string password)
+        public async Task<bool> Authentication(string email, string password)
         {
-            
+            var result = await unitOfWork.SignInManager.PasswordSignInAsync(email, password, false, false);
+
+            if (result.Succeeded)
+                return true;
+
+            return false;
         }
     }
 }

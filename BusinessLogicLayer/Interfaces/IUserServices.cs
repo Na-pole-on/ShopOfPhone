@@ -8,6 +8,7 @@ namespace BusinessLogicLayer.Interfaces
 {
     public interface IUserServices
     {
-        Task CreateUser(string email, string password);
+        Task CreateUser(string username, string password);
+        Task<bool> Authentication(string username, string password);
     }
 }

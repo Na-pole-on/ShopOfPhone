@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopOfPhone.Models;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ namespace ShopOfPhone.Controllers
             _userServices = userServices;
         }
 
+        [Authorize]
         public IActionResult Index() => View();
 
         [HttpGet]
@@ -25,6 +27,23 @@ namespace ShopOfPhone.Controllers
             if(ModelState.IsValid)
             {
                 await _userServices.CreateUser(model.Email, model.Password);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public IActionResult SignIn() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _userServices.Authentication(model.Email, model.Password);
 
                 return RedirectToAction("Index");
             }

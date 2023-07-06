@@ -16,14 +16,18 @@ namespace DataAccessLayer.Repositories
         private bool disposed = false;
 
         private UserManager<User> userManager;
+        private SignInManager<User> signInManager;
 
-        public UnitOfWork(AppDatabase appDatabase, UserManager<User> userManager)
+        public UnitOfWork(AppDatabase appDatabase, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             this.db = appDatabase;
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public UserManager<User> UserManager => userManager;
+
+        public SignInManager<User> SignInManager => signInManager;
 
         public async Task SaveAsync() => await db.SaveChangesAsync();
 

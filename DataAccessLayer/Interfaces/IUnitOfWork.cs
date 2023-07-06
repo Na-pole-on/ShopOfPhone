@@ -11,6 +11,7 @@ namespace DataAccessLayer.Interfaces
     public interface IUnitOfWork: IDisposable
     {
         UserManager<User> UserManager { get; }
+        SignInManager<User> SignInManager { get; }
         Task SaveAsync();
     }
 }
