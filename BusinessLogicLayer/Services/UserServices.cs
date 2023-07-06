@@ -28,5 +28,10 @@ namespace BusinessLogicLayer.Services
                 await unitOfWork.UserManager.CreateAsync(user, password);
             }
         }
+
+        public async Task Authentication(string email, string password)
+        {
+            
+        }
     }
 }
