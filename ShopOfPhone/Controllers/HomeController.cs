@@ -15,9 +15,6 @@ namespace ShopOfPhone.Controllers
             _userServices = userServices;
         }
 
-        [Authorize]
-        public IActionResult Index() => View();
-
         [HttpGet]
         public IActionResult SignUp() => View();
 
@@ -28,7 +25,7 @@ namespace ShopOfPhone.Controllers
             {
                 await _userServices.CreateUser(model.UserName, model.Password);
 
-                return RedirectToAction("Index");
+                return Redirect("/Shop/Index");
             }
 
             return View(model);
@@ -45,10 +42,17 @@ namespace ShopOfPhone.Controllers
             {
                 await _userServices.Authentication(model.UserName, model.Password);
 
-                return RedirectToAction("Index");
+                return Redirect("/Shop/Index");
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await _userServices.SignOut();
+
+            return RedirectToAction("SignIn");
         }
     }
 }

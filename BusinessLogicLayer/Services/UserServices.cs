@@ -31,12 +31,15 @@ namespace BusinessLogicLayer.Services
 
         public async Task<bool> Authentication(string username, string password)
         {
-            var result = await unitOfWork.SignInManager.PasswordSignInAsync(username, password, false, false);
+            var result = await unitOfWork.SignInManager.PasswordSignInAsync(username, password, true, false);
 
             if (result.Succeeded)
                 return true;
 
             return false;
         }
+
+        public async Task SignOut() => await unitOfWork.SignInManager.SignOutAsync();
+
     }
 }

@@ -10,5 +10,6 @@ namespace BusinessLogicLayer.Interfaces
     {
         Task CreateUser(string username, string password);
         Task<bool> Authentication(string username, string password);
+        Task SignOut();
     }
 }
