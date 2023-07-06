@@ -1,19 +1,38 @@
 ﻿@model ShopOfPhone.Models.CreateUserViewModel
 
-<form asp-action="SignUp" asp-controller="Home">
-    <p>
-        <label asp-for="Email"></label> <br />
-        <input asp-for="Email" type="email" />
-        <span asp-validation-for="Email"></span>
-    </p>
+<div class="vh-100">
+    <div class="d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-4">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body text-center p-5">
 
-    <p>
-        <label asp-for="Password"></label> <br />
-        <input asp-for="Password" type="password" />
-        <span asp-validation-for="Password"></span>
-    </p>
+                            <h2 class="text-uppercase mb-5">Sign Up</h2>
 
-    <p>
-        <input type="submit" value="Sign Up" />
-    </p>
-</form>
+                            <form asp-antiforgery="true" asp-action="SignUp" asp-controller="Home">
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                    <label for="floatingInput">Email address</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                                    <label for="floatingPassword">Password</label>
+                                </div>
+
+                                <div class="form-floating mb-4">
+                                    <input asp-for="RepeatPassword" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                                    <label for="floatingPassword">Repeat password</label>
+                                </div>
+
+                                <button class="btn btn-primary btn-lg px-5" type="submit">Sign Up</button>
+                            </form>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
