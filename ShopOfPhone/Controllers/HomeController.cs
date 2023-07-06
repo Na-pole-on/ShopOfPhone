@@ -26,7 +26,7 @@ namespace ShopOfPhone.Controllers
         {
             if(ModelState.IsValid)
             {
-                await _userServices.CreateUser(model.Email, model.Password);
+                await _userServices.CreateUser(model.UserName, model.Password);
 
                 return RedirectToAction("Index");
             }
@@ -43,7 +43,7 @@ namespace ShopOfPhone.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _userServices.Authentication(model.Email, model.Password);
+                await _userServices.Authentication(model.UserName, model.Password);
 
                 return RedirectToAction("Index");
             }

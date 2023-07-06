@@ -18,20 +18,20 @@ namespace BusinessLogicLayer.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task CreateUser(string email, string password)
+        public async Task CreateUser(string username, string password)
         {
-            var model = await unitOfWork.UserManager.FindByEmailAsync(email);
+            var model = await unitOfWork.UserManager.FindByNameAsync(username);
 
             if(model is null)
             {
-                User user = new User { Email = email, UserName = email };
+                User user = new User { UserName = username };
                 await unitOfWork.UserManager.CreateAsync(user, password);
             }
         }
 
-        public async Task<bool> Authentication(string email, string password)
+        public async Task<bool> Authentication(string username, string password)
         {
-            var result = await unitOfWork.SignInManager.PasswordSignInAsync(email, password, false, false);
+            var result = await unitOfWork.SignInManager.PasswordSignInAsync(username, password, false, false);
 
             if (result.Succeeded)
                 return true;
