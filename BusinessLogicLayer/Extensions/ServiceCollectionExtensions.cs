@@ -18,6 +18,7 @@ namespace BusinessLogicLayer.Extensions
             string connectionString)
         {
             services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IPhoneService, PhoneService>();
 
             services.AddDataAccessLayer(configuration, connectionString);
 

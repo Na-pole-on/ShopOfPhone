@@ -20,8 +20,6 @@ namespace DataAccessLayer.Extensions
             IConfiguration configuration, 
             string connectionString)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>(); 
-
             services.AddDbContext<AppDatabase>(options =>
             {
                 options.UseSqlServer(connectionString);
@@ -29,6 +27,8 @@ namespace DataAccessLayer.Extensions
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDatabase>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAuthentication("Cookies")
                 .AddCookie(options =>

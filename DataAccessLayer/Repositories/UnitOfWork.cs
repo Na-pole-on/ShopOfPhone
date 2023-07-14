@@ -17,8 +17,11 @@ namespace DataAccessLayer.Repositories
 
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
+        private PhoneRepository phoneRepository;
 
-        public UnitOfWork(AppDatabase appDatabase, UserManager<User> userManager, SignInManager<User> signInManager)
+        public UnitOfWork(AppDatabase appDatabase, 
+            UserManager<User> userManager, 
+            SignInManager<User> signInManager)
         {
             this.db = appDatabase;
             this.userManager = userManager;
@@ -28,6 +31,17 @@ namespace DataAccessLayer.Repositories
         public UserManager<User> UserManager => userManager;
 
         public SignInManager<User> SignInManager => signInManager;
+
+        public IRepository<Phone> Phones
+        {
+            get
+            {
+                if (phoneRepository == null)
+                    phoneRepository = new PhoneRepository(db);
+
+                return phoneRepository;
+            }
+        }
 
         public async Task SaveAsync() => await db.SaveChangesAsync();
 

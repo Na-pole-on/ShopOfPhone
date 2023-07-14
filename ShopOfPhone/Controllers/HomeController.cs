@@ -40,7 +40,10 @@ namespace ShopOfPhone.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _userServices.Authentication(model.UserName, model.Password);
+                bool result = await _userServices.Authentication(model.UserName, model.Password);
+
+                if (!result)
+                    return View(model);
 
                 return Redirect("/Shop/Index");
             }

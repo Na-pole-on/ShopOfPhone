@@ -12,6 +12,7 @@ namespace DataAccessLayer.Interfaces
     {
         UserManager<User> UserManager { get; }
         SignInManager<User> SignInManager { get; }
+        IRepository<Phone> Phones { get; }
         Task SaveAsync();
     }
 }

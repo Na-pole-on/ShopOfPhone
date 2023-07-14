@@ -4,6 +4,7 @@ namespace ShopOfPhone.ViewModels
 {
     public class ListOfViewModels
     {
-        public User? User { get; set; } = new User();
+        public UserViewModel? User { get; set; } = new UserViewModel();
+        public List<PhoneViewModel> Phones { get; set; } = new List<PhoneViewModel>();
     }
 }

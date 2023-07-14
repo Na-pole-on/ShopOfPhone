@@ -1,10 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLayer.Entities;
-
 using ShopOfPhone.ViewModels;
 using System.Security.Claims;
 using System.Security.Principal;
+using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Dtos;
+using ShopOfPhone.Models;
+using System.IO;
+using DataAccessLayer.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopOfPhone.Controllers
 {
@@ -12,30 +17,85 @@ namespace ShopOfPhone.Controllers
     public class ShopController : Controller
     {
         ListOfViewModels models = new ListOfViewModels();
+        private IUserServices _userServices;
+        private IPhoneService _phoneService;
 
-        public IActionResult Index()
+        public ShopController(IUserServices userServices, 
+            IPhoneService phoneService)
         {
-            //models.User = ReturnUser();
-            User u = new User { PhoneNumber = "2039102936" };
-            return Content($"{u.PhoneNumber.GetTypeCode()}");
+            _userServices = userServices;
+            _phoneService = phoneService;
         }
 
-        /*
-         private User ReturnUser()
+        public async Task<IActionResult> Index()
         {
-            User user = new User();
+            string str = User.Claims.First(p => p.Type == ClaimTypes.NameIdentifier).ToString();
+            string id = str.Remove(0, str.IndexOf(": ") + 2);
 
-            user.UserName = User.Identity.Name;
-            
-            var email = User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Email);
-            user.Email = (email is null) ? "NULL" : email.ToString();
+            var userModels = await _userServices.GetUserById(id);
 
-            var phone = User.Claims.FirstOrDefault(p => p.Type.ToString() == "IdentityUser<TKey>.PhoneNumber");
-            user.PhoneNumber = (phone is null) ? "NULL" : phone.ToString();
+            if(userModels is not null)
+            {
+                models.User.UserName = userModels.UserName;
+                models.User.Email = userModels.Email;
+                models.User.PhoneNumber = userModels.PhoneNumber;
+            }
 
-            return user;
+            List<PhoneDTO> phoneModels = _phoneService.GetPhones().ToList();
+            List<PhoneViewModel> phone = ToPhoneViewModel(phoneModels);
+
+            models.Phones = phone;
+
+            return View(models);
         }
-         
-         */
+
+        [HttpGet]
+        public IActionResult PhoneAdd() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> PhoneAdd(CreatePhoneViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                PhoneDTO phone = new PhoneDTO
+                {
+                    Name = model.Name,
+                    Price = model.Price,
+                    Quantity = model.Quantity,
+                    Information = model.Information,
+                    Photo = model.PhonePhoto,
+                    UserName = User.Identity.Name
+                };
+
+                await _phoneService.CreateAsync(phone);
+
+                return Redirect("/Shop/Index");
+            }
+
+            return View(model);
+        }
+
+        private List<PhoneViewModel> ToPhoneViewModel(List<PhoneDTO> models)
+        {
+            List<PhoneViewModel> phones = new List<PhoneViewModel>();
+
+            foreach (PhoneDTO phone in models)
+            {
+                PhoneViewModel model = new PhoneViewModel
+                {
+                    Id = phone.Id,
+                    Name = phone.Name,
+                    Quantity = phone.Quantity,
+                    Information = phone.Information,
+                    Price = phone.Price,
+                    PhoneLink = phone.PhotoLink
+                };
+
+                phones.Add(model);
+            }
+
+            return phones;
+        }
+
     }
 }
