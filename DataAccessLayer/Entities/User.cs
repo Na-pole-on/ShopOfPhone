@@ -11,5 +11,6 @@ namespace DataAccessLayer.Entities
     public class User: IdentityUser
     {
         public List<Phone>? Phones { get; set; }
+        public List<Order>? Orders { get; set; }
     }
 }

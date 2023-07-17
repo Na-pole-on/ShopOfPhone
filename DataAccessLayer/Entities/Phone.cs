@@ -22,6 +22,8 @@ namespace DataAccessLayer.Entities
         public User? User { get; set; } 
         public string? UserName { get; set; }
 
+        public Order? Order { get; set; }
+
         public Phone()
         {
             this.Id = Guid.NewGuid().ToString();

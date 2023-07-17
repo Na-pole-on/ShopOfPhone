@@ -17,7 +17,8 @@ namespace DataAccessLayer.Repositories
 
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
-        private PhoneRepository phoneRepository;
+        private PhoneRepository? phoneRepository;
+        private OrderRepository? orderRepository;
 
         public UnitOfWork(AppDatabase appDatabase, 
             UserManager<User> userManager, 
@@ -29,9 +30,7 @@ namespace DataAccessLayer.Repositories
         }
 
         public UserManager<User> UserManager => userManager;
-
         public SignInManager<User> SignInManager => signInManager;
-
         public IRepository<Phone> Phones
         {
             get
@@ -40,6 +39,16 @@ namespace DataAccessLayer.Repositories
                     phoneRepository = new PhoneRepository(db);
 
                 return phoneRepository;
+            }
+        }
+        public IRepository<Order> Orders
+        {
+            get
+            {
+                if(orderRepository == null)
+                    orderRepository = new OrderRepository(db);
+
+                return orderRepository;
             }
         }
 
