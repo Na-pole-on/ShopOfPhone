@@ -75,6 +75,8 @@ namespace ShopOfPhone.Controllers
             return View(model);
         }
 
+        public IActionResult ShoppingCart() => View(models);
+
         private List<PhoneViewModel> ToPhoneViewModel(List<PhoneDTO> models)
         {
             List<PhoneViewModel> phones = new List<PhoneViewModel>();

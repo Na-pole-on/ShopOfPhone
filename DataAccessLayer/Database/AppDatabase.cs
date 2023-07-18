@@ -36,7 +36,11 @@ namespace DataAccessLayer.Database
             builder.Entity<Phone>()
                 .Ignore(p => p.Photo);
 
-            builder.Entity<Phone>().HasOne(p => p.Order).WithOne(o => o.Phone).HasForeignKey<Order>(o => o.Id).HasPrincipalKey(o => )
+            builder.Entity<Phone>()
+                .HasOne(p => p.Order)
+                .WithOne(o => o.Phone)
+                .HasForeignKey<Order>(o => o.PhoneId)
+                .HasPrincipalKey<Phone>(p => p.Id);
 
             base.OnModelCreating(builder);
         }
