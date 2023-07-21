@@ -13,10 +13,10 @@ namespace DataAccessLayer.Entities
 
 
         public string? UserId { get; set; }
-        public User? User { get; set; }
+        public User? User { get; set; } = new User();
 
         public string? PhoneId { get; set; }
-        public Phone? Phone { get; set; }
+        public Phone Phone { get; set; } = new Phone();
 
         public Order()
         {

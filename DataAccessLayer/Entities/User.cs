@@ -10,7 +10,7 @@ namespace DataAccessLayer.Entities
 {
     public class User: IdentityUser
     {
-        public List<Phone>? Phones { get; set; }
-        public List<Order>? Orders { get; set; }
+        public List<Phone> Phones { get; set; } = new List<Phone>();
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }
