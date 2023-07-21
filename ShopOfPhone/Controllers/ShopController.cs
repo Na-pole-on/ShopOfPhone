@@ -16,26 +16,30 @@ namespace ShopOfPhone.Controllers
     [Authorize]
     public class ShopController : Controller
     {
-        ListOfViewModels models = new ListOfViewModels();
+        private static ListOfViewModels models = new ListOfViewModels();
         private IUserServices _userServices;
         private IPhoneService _phoneService;
+        private IOrderService _orderService;
 
         public ShopController(IUserServices userServices, 
-            IPhoneService phoneService)
+            IPhoneService phoneService,
+            IOrderService orderService)
         {
             _userServices = userServices;
             _phoneService = phoneService;
+            _orderService = orderService;
         }
 
         public async Task<IActionResult> Index()
         {
             string str = User.Claims.First(p => p.Type == ClaimTypes.NameIdentifier).ToString();
             string id = str.Remove(0, str.IndexOf(": ") + 2);
-
-            var userModels = await _userServices.GetUserById(id);
+             
+             var userModels = await _userServices.GetUserById(id);
 
             if(userModels is not null)
             {
+                models.User.Id = userModels.Id;
                 models.User.UserName = userModels.UserName;
                 models.User.Email = userModels.Email;
                 models.User.PhoneNumber = userModels.PhoneNumber;
@@ -75,7 +79,39 @@ namespace ShopOfPhone.Controllers
             return View(model);
         }
 
-        public IActionResult ShoppingCart() => View(models);
+        public async Task<IActionResult> ShoppingCart()
+        {
+            IEnumerable<OrderViewModel> orderVM = _orderService
+                .GetAllFromUser(models.User.Id).Select(o => new OrderViewModel
+                {
+                    Id = o.Id,
+                    Quantity = o.Quantity,
+                    Phone = ToPhoneViewModel(_phoneService.GetPhone(o.PhoneId))
+                });
+
+            models.Orders = orderVM.ToList();
+
+            if (orderVM is not null)
+                return View(models);
+
+            return Content("order is null");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddOrder(string phoneId, string userId)
+        {
+            OrderDTO order = new OrderDTO
+            {
+                Quantity = 1,
+                UserId = userId,
+                PhoneId = phoneId
+            };
+
+            await _orderService.AddFromUserAsync(order);
+
+            return RedirectToAction("Index");
+        }
+
 
         private List<PhoneViewModel> ToPhoneViewModel(List<PhoneDTO> models)
         {
@@ -97,6 +133,19 @@ namespace ShopOfPhone.Controllers
             }
 
             return phones;
+        }
+
+        private PhoneViewModel ToPhoneViewModel(PhoneDTO phone)
+        {
+            return new PhoneViewModel
+            {
+                Id = phone.Id,
+                Name = phone.Name,
+                Quantity = phone.Quantity,
+                Information = phone.Information,
+                PhoneLink = phone.PhotoLink,
+                Price = phone.Price,
+            };
         }
 
     }

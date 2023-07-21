@@ -21,8 +21,11 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Order> GetAll() => db.Orders;
 
-        public async Task<Order> GetById(string id) => await db.Orders
+        public async Task<Order> GetByIdAsync(string id) => await db.Orders
             .FirstOrDefaultAsync(o => o.Id == id);
+
+        public Order GetById(string id) => db.Orders
+            .FirstOrDefault(o => o.Id == id);
 
         public async Task<bool> CreateAsync(Order model)
         {
@@ -37,7 +40,7 @@ namespace DataAccessLayer.Repositories
 
         public async Task<bool> DeleteAsync(string id)
         {
-            Order order = await GetById(id);
+            Order order = await GetByIdAsync(id);
 
             if(order is not null)
             {

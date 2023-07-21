@@ -21,7 +21,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task<OrderDTO> GetByIdAsync(string orderId)
         {
-            Order order = await unitOfWork.Orders.GetById(orderId);
+            Order order = await unitOfWork.Orders.GetByIdAsync(orderId);
 
             if(order is not null)
             {
@@ -41,8 +41,8 @@ namespace BusinessLogicLayer.Services
 
         public IEnumerable<OrderDTO> GetAllFromUser(string userId)
         {
-            IEnumerable<Order> orders = unitOfWork.UserManager
-                .FindByIdAsync(userId).Result.Orders ?? new List<Order>();
+            IEnumerable<Order> orders = unitOfWork.Orders
+                .GetAll().Where(o => o.UserId == userId);
 
             if (orders.Count() > 0)
             {
@@ -61,6 +61,45 @@ namespace BusinessLogicLayer.Services
             return new List<OrderDTO>();
         }
 
-        public 
+        public async Task<bool> AddFromUserAsync(OrderDTO model)
+        {
+            if(model is not null)
+            {
+                Order order = new Order
+                {
+                    Quantity = model.Quantity,
+                    User = await unitOfWork.UserManager.FindByIdAsync(model.UserId),
+                    Phone = await unitOfWork.Phones.GetByIdAsync(model.PhoneId)
+                };
+
+                await unitOfWork.Orders.CreateAsync(order);
+                await unitOfWork.SaveAsync();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> DeleteFromUserAsync(string orderId, string userId)
+        {
+            User user = await unitOfWork.UserManager
+                .FindByIdAsync(userId);
+
+            if(user is not null)
+            {
+                Order? order = user.Orders.FirstOrDefault(o => o.Id == orderId);
+
+                if(order is not null)
+                {
+                    user.Orders.Remove(order);
+
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
     }
 }

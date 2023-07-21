@@ -21,8 +21,11 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Phone> GetAll() => db.Phones;
 
-        public async Task<Phone> GetById(string id) => await db.Phones
+        public async Task<Phone> GetByIdAsync(string id) => await db.Phones
             .FirstOrDefaultAsync(p => p.Id == id);
+
+        public Phone GetById(string id) => db.Phones
+            .FirstOrDefault(p => p.Id == id);
 
         public async Task<bool> CreateAsync(Phone model)
         {
@@ -58,7 +61,7 @@ namespace DataAccessLayer.Repositories
 
         public async Task<bool> DeleteAsync(string id)
         {
-            Phone model = await GetById(id);
+            Phone model = await GetByIdAsync(id);
 
             if(model is not null)
             {

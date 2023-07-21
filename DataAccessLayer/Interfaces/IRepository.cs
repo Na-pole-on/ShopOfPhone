@@ -10,7 +10,8 @@ namespace DataAccessLayer.Interfaces
         where T : class
     {
         IEnumerable<T> GetAll();
-        Task<T> GetById(string id);
+        Task<T> GetByIdAsync(string id);
+        T GetById(string id);
         Task<bool> CreateAsync(T entity);
         bool Update(T entity);
         Task<bool> DeleteAsync(string id);

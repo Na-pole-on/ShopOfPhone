@@ -51,6 +51,7 @@ namespace BusinessLogicLayer.Services
             {
                 UserDTO user = new UserDTO
                 {
+                    Id = model.Id,
                     UserName = model.UserName,
                     Email = (model.Email is null || model.Email == "") ? "NULL" : model.Email,
                     PhoneNumber = (model.PhoneNumber is null || model.PhoneNumber == "") ? "NULL" : model.PhoneNumber

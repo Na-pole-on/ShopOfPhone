@@ -31,6 +31,22 @@ namespace BusinessLogicLayer.Services
             return new List<PhoneDTO>();
         }
 
+        public PhoneDTO GetPhone(string id)
+        {
+            Phone phone = unitOfWork.Phones.GetById(id);
+
+            return new PhoneDTO
+            {
+                Id = phone.Id,
+                Information = phone.Information,
+                Name = phone.Name,
+                PhotoLink = phone.PhotoLink,
+                Price = phone.Price,
+                Quantity = phone.Quantity,
+                UserName = phone.UserName,
+            };
+        }
+
         public async Task<bool> CreateAsync(PhoneDTO model)
         {
             if(model is not null)

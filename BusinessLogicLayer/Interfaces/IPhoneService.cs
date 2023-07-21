@@ -10,6 +10,7 @@ namespace BusinessLogicLayer.Interfaces
     public interface IPhoneService
     {
         IEnumerable<PhoneDTO> GetPhones();
+        PhoneDTO GetPhone(string id);
         Task<bool> CreateAsync(PhoneDTO model);
     }
 }

@@ -19,10 +19,10 @@ namespace DataAccessLayer.Entities
         //Ignore
         public IFormFile? Photo { get; set; }
 
-        public User User { get; set; } = new User(); 
+        public User? User { get; set; } 
         public string? UserName { get; set; }
 
-        public Order Order { get; set; } = new Order();
+        public Order? Order { get; set; }
 
         public Phone()
         {

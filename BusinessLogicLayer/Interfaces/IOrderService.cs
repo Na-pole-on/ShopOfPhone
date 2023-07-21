@@ -11,7 +11,7 @@ namespace BusinessLogicLayer.Interfaces
     {
         Task<OrderDTO> GetByIdAsync(string orderId);
         IEnumerable<OrderDTO> GetAllFromUser(string userId);
-        Task<bool> AddFromUserAsync(OrderDTO orderDTO, string id);
+        Task<bool> AddFromUserAsync(OrderDTO orderDTO);
         Task<bool> DeleteFromUserAsync(string orderId, string userId);
     }
 }
